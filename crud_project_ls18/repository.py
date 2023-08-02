@@ -3,6 +3,7 @@ import sys
 import uuid
 from flask import session
 
+
 class PostsRepository():
     def __init__(self):
         if 'posts' not in session:

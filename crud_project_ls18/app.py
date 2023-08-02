@@ -16,11 +16,15 @@ from crud_project_ls18.validator import validate
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 
-@app.route('/') # Главная страница
+
+# Главная страница
+@app.route('/')
 def index():
     return render_template('index.html')
 
-@app.get('/posts') # Список постов
+
+# Список постов
+@app.get('/posts')
 def posts_get():
     repo = PostsRepository()
     messages = get_flashed_messages(with_categories=True)
@@ -31,6 +35,7 @@ def posts_get():
         messages=messages,
         )
 
+
 @app.route('/posts/new')
 def new_post():
     post = {}
@@ -40,6 +45,7 @@ def new_post():
         post=post,
         errors=errors,
     )
+
 
 @app.post('/posts')
 def posts_post():
@@ -58,6 +64,7 @@ def posts_post():
     resp.headers['X-ID'] = id
     return resp
 
+
 # BEGIN (write your solution here)
 @app.route('/posts/<id>/update')
 def edit_post(id):
@@ -70,7 +77,8 @@ def edit_post(id):
            post=post,
            errors=errors,
     )
-    
+
+
 @app.route('/posts/<id>/update', methods=['POST'])
 def patch_post(id):
     repo = PostsRepository()
