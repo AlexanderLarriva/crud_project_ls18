@@ -10,17 +10,17 @@ from flask import (
 )
 import os
 
-from repository import PostsRepository
-from validator import validate
+from crud_project_ls18.repository import PostsRepository
+from crud_project_ls18.validator import validate
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 
-@app.route('/')
+@app.route('/') # Главная страница
 def index():
     return render_template('index.html')
 
-@app.get('/posts')
+@app.get('/posts') # Список постов
 def posts_get():
     repo = PostsRepository()
     messages = get_flashed_messages(with_categories=True)
@@ -59,5 +59,39 @@ def posts_post():
     return resp
 
 # BEGIN (write your solution here)
+@app.route('/posts/<id>/update')
+def edit_post(id):
+    repo = PostsRepository()
+    post = repo.find(id)
+    errors = []
 
+    return render_template(
+           'posts/edit.html',
+           post=post,
+           errors=errors,
+    )
+    
+@app.route('/posts/<id>/update', methods=['POST'])
+def patch_post(id):
+    repo = PostsRepository()
+    post = repo.find(id)
+    print(post)
+    data = request.form.to_dict()
+    print(data)
+
+    errors = validate(data)
+    print(errors)
+    if errors:
+        return render_template(
+            'posts/edit.html',
+            post=post,
+            errors=errors,
+        ), 422
+
+    # Ручное копирование данных из формы в нашу сущность
+    post['title'] = data['title']
+    post['body'] = data['body']
+    repo.save(post)
+    flash('Post has been updated', 'success')
+    return redirect(url_for('posts_get'))
 # END

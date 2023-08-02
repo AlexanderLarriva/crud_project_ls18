@@ -6,7 +6,27 @@
   <body>
     <a href="{{ url_for('posts_get') }}">Посты</a>
 <!-- BEGIN (write your solution here) -->
-    
-<!-- END -->
+<form action="{{ url_for('patch_post', id=post.id) }}" method="post">
+  <div>
+    <label>
+        Название *
+        <input type="text" name="title" value="{{ post.title }}">
+    </label>
+    {% if errors %}
+        <div>{{ errors.name }}</div>
+    {% endif %}
+  </div>
+  <div>
+    <label>
+        Содержание *
+        <input type="text" name="body" value="{{ post.body }}">
+    </label>
+    {% if errors %}
+        <div>{{ errors.name }}</div>
+    {% endif %}
+  </div>
+   <input type="submit" value="Update">
+</form>
+<!-- END
   </body>
 </html>

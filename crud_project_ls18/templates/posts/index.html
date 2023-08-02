@@ -16,7 +16,10 @@
 
     <ul>
     <!-- BEGIN (write your solution here) -->
-    
+      {% for post in posts%}
+        <!-- <li><a href="/posts/{{ post.id }}/update">{{ post.title }}</a></li> -->
+          <li><a href="/posts/{{ post.id }}/update">{{ post.title }}</a></li>
+        {% endfor %}
     <!-- END -->
     </ul>
 </body>
